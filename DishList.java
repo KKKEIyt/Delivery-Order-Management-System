@@ -2,6 +2,7 @@ package bighw;
 import java.util.*;
 
 public class DishList {
+	private static List<DishList> dishes;
 	private static int DishId; // 菜品编号
     private static String DishName; // 菜品名称
     private static double DishPrice; // 菜品价格
@@ -14,6 +15,9 @@ public class DishList {
     	this.DishPrice=DishPrice;
     	this.DishQuantity=DishQuantity;
     	this.DishDescription=DishDescription;
+    }
+    public DishList() {
+    	dishes=new ArrayList<>();
     }
     
     //获取菜品编号
@@ -56,5 +60,10 @@ public class DishList {
    //获取菜品评价
 	public List<String> getDishDescription() {
 		return DishDescription;
+	}
+	
+	//获取菜品列表
+	public static List<DishList> getDishes(){
+		return dishes;
 	}
 }
