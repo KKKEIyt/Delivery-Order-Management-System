@@ -6,7 +6,7 @@ public class Customer<T>{
 	private String name;//顾客姓名
 	private String password;//顾客密码
 	private String phone;//顾客电话
-	static List<DishList> dishes;//菜品列表
+	private static List<DishList> dishes;//菜品列表
 	private List<Order> orderList;//订单列表
 	static List<Customer> customerList=new ArrayList<>();
 	DishList DishName;
@@ -124,6 +124,8 @@ public class Customer<T>{
 		
 	//显示所有菜品信息
 	public void displayAllDishes() {
+		DishList dishList = new DishList();  // 创建菜品列表对象
+		List<DishList> dishes = dishList.getDishes();  // 获取菜品列表
 		System.out.println("菜单信息如下：");
 		for(DishList dish:dishes) {
 			System.out.println("菜品编号：" + dish.getDishId());
