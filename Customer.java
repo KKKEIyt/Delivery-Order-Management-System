@@ -6,7 +6,7 @@ public class Customer<T>{
 	private String name;//顾客姓名
 	private String password;//顾客密码
 	private String phone;//顾客电话
-	private List<DishList> dishList;//菜品列表
+	static List<DishList> dishes;//菜品列表
 	private List<Order> orderList;//订单列表
 	static List<Customer> customerList=new ArrayList<>();
 	DishList DishName;
@@ -14,7 +14,7 @@ public class Customer<T>{
 	
 	//构造函数
 	public Customer() {
-		this.dishList=new ArrayList<>();
+		this.dishes=new ArrayList<>();
 		this.orderList=new ArrayList<>();
 	}
 	
@@ -45,7 +45,7 @@ public class Customer<T>{
 	
 	//获取菜品列表
 	public List<DishList> getDishList(){
-		return dishList;
+		return dishes;
 	}
 	
 	//获取订单列表
@@ -70,7 +70,7 @@ public class Customer<T>{
 	//按菜品名称模糊查询
 	public List<DishList> queryDishByName(String DishName) {
 		List<DishList> result=new ArrayList<DishList>();
-		for(DishList dish:dishList) {
+		for(DishList dish:dishes) {
 			if(dish.getDishName().contains(DishName)) {
 				result.add(dish);
 			}
@@ -89,7 +89,7 @@ public class Customer<T>{
 	//按价格范围查询
 	public List<DishList> queryDishByPrice(double minPrice,double maxPrice){
 		List<DishList> result=new ArrayList<DishList>();
-		for(DishList dish:dishList) {
+		for(DishList dish:dishes) {
 			if(dish.getDishPrice()>=minPrice&&dish.getDishPrice()<=maxPrice) {
 				result.add(dish);
 			}
@@ -107,7 +107,7 @@ public class Customer<T>{
 		
 	//按价格的升序或降序排列显示
 	public void displayDishByPrice(boolean ascending) {
-		List<DishList> sortedDishes=new ArrayList<DishList>(dishList);
+		List<DishList> sortedDishes=new ArrayList<DishList>(dishes);
 		Collections.sort(sortedDishes,new Comparator<DishList>() {
 			public int compare(DishList dish1,DishList dish2) {
 				return Double.compare(dish1.getDishPrice(),dish2.getDishPrice());
@@ -125,24 +125,28 @@ public class Customer<T>{
 	//显示所有菜品信息
 	public void displayAllDishes() {
 		System.out.println("菜单信息如下：");
-		for(DishList dish:dishList) {
-			System.out.println(dish);
+		for(DishList dish:dishes) {
+			System.out.println("菜品编号：" + dish.getDishId());
+	        System.out.println("菜品名称：" + dish.getDishName());
+	        System.out.println("菜品价格：" + dish.getDishPrice());
+	        System.out.println("菜品数量：" + dish.getDishQuantity());
+	        System.out.println("---------------------------");
 		}
 	}
 		
 	//添加菜品到菜品列表
 	public void cusAddDish(DishList dish) {
-		dishList.add(dish);
+		dishes.add(dish);
 	}
 	
 	//从菜品列表中删除菜品
 	public void cusRemoveDish(DishList dish) {
-		dishList.remove(dish);
+		dishes.remove(dish);
 	}
 	
 	//创建订单
 	public void createOrder(String name,String phone,List<Order> orderList) {
-	Order order=new Order(name,phone,dishList,DishName,DishQuantity);
+	Order order=new Order(name,phone,dishes,DishName,DishQuantity);
 	order.setCustomerId(this.hashCode()); // 设置顾客的唯一标识符
 	orderList.add(order);
 	System.out.println("创建订单成功！");
@@ -213,7 +217,7 @@ public class Customer<T>{
 	    System.out.println("顾客姓名：" + name);
 	    System.out.println("顾客电话：" + phone);
 	    System.out.println("菜品列表：");
-	    for (DishList dish : dishList) {
+	    for (DishList dish : dishes) {
 	        System.out.println(dish.getDishName() + " " + dish.getDishPrice());
 	    }
 	    System.out.println("订单列表：");
