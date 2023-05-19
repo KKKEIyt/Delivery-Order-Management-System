@@ -53,6 +53,20 @@ public class Customer<T>{
 		return orderList;
 	}
 	
+	//获取顾客密码
+	public String getPassword() {
+		return password;
+	}
+	
+	public static Customer getCustomerByUsernameAndPassword(String username,String password) {
+		for(Customer customer:customerList) {
+			if(customer.getName().equals(username)&&customer.getPassword().equals(password)){
+				return customer;
+			}
+		}
+		return null;
+	}
+	
 	//按菜品名称模糊查询
 	public List<DishList> queryDishByName(String DishName) {
 		List<DishList> result=new ArrayList<DishList>();
