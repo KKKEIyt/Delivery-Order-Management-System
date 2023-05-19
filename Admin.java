@@ -4,9 +4,9 @@ import java.util.*;
 public class Admin<T> {
 	private String username;
 	private String password;
-	private List<DishList> dishes;//存储菜品信息的链表
+	private static List<DishList> dishes;//存储菜品信息的链表
 	List<Order> orderList;
-	
+	Scanner scanner=new Scanner(System.in);
 	public Admin(String username,String password) {
 		this.username=username;
 		this.password=password;
@@ -18,22 +18,20 @@ public class Admin<T> {
 	}
 	
 	//添加菜品信息
-	public void addDish(DishList dish) {
-		if (dish != null) {
-            // 判断是否已经添加过该菜品
-            for (DishList d : dishes) {
-                if (d.getDishId() == dish.getDishId()) {
-                    // 如果已经添加过，则更新该菜品的数量
-                    d.setDishQuantity(d.getDishQuantity() + dish.getDishQuantity());
-                    System.out.println("菜品修改成功！");
-                    return;
-                }
-            }
-            // 如果菜品列表中不存在该菜品，则添加该菜品
-		dishes.add(dish);
-		System.out.println("菜品添加成功！");
-		System.out.println(dish.toString());
-		}
+	public void addDish(String dishInfo) {
+	    String[] dishInfoArr = dishInfo.split(",");
+	    int dishId = Integer.parseInt(dishInfoArr[0].trim());
+	    String dishName = dishInfoArr[1].trim();
+	    double dishPrice = Double.parseDouble(dishInfoArr[2].trim());
+	    int dishQuantity = Integer.parseInt(dishInfoArr[3].trim());
+	    String dishDescription = dishInfoArr[4].trim();
+
+	    DishList dish = new DishList(dishId, dishName, dishPrice, dishQuantity, new ArrayList<>());
+	    dish.getDishDescription().add(dishDescription);
+	    dishes.add(dish);
+
+	    System.out.println("菜品添加成功！");
+	    System.out.println(dish.toString());
 	}
 	
 	//修改菜品信息
@@ -189,6 +187,37 @@ public class Admin<T> {
 		}
 		return false;
 	}
+
+	//查看菜品的评价
+	public void displayDishReviews() {
+		System.out.println("请输入菜品编号：");
+		int dishId=scanner.nextInt();
+		
+		DishList dish=findDishById(dishId);
+		
+		if(dish!=null) {
+			List<String> reviews=dish.getDishDescription();
+			
+			if(reviews.isEmpty()) {
+				System.out.println("该菜品暂无评价！");
+			}else {
+				System.out.println("菜品评价：");
+				for(String review:reviews) {
+					System.out.println(review);
+				}
+			}
+		}else {
+			System.out.println("未找到该菜品！");
+		}		
+	}
 	
-	//
+	//通过菜品ID返回菜品
+	private static DishList findDishById(int dishId) {
+		for(DishList dish:dishes) {
+			if(dish.getDishId()==dishId) {
+				return dish;
+			}
+		}
+		return null;
+	}
 }
