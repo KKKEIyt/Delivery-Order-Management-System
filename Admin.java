@@ -5,7 +5,7 @@ public class Admin<T> {
 	private String username;
 	private String password;
 	private static List<DishList> dishes;//存储菜品信息的链表
-	List<Order> orderList;
+	private static List<Order> orderList;
 	Scanner scanner=new Scanner(System.in);
 	public Admin(String username,String password) {
 		this.username=username;
@@ -190,25 +190,23 @@ public class Admin<T> {
 
 	//查看菜品的评价
 	public void displayDishReviews() {
-		System.out.println("请输入菜品编号：");
-		int dishId=scanner.nextInt();
-		
-		DishList dish=findDishById(dishId);
-		
-		if(dish!=null) {
-			List<String> reviews=dish.getDishDescription();
-			
-			if(reviews.isEmpty()) {
-				System.out.println("该菜品暂无评价！");
-			}else {
-				System.out.println("菜品评价：");
-				for(String review:reviews) {
-					System.out.println(review);
-				}
-			}
-		}else {
-			System.out.println("未找到该菜品！");
-		}		
+	    System.out.println("请输入菜品编号：");
+	    int dishId = scanner.nextInt();
+
+	    DishList dish = findDishById(dishId);
+
+	    if (dish != null) {
+	        int rating = dish.getRating(); // Assuming you have a method to retrieve the rating for the dish
+
+	        if (rating == 0) {
+	            System.out.println("该菜品暂无评价！");
+	        } else {
+	            System.out.println("菜品评价：");
+	            System.out.println("评分：" + rating);
+	        }
+	    } else {
+	        System.out.println("未找到该菜品！");
+	    }
 	}
 	
 	//通过菜品ID返回菜品
@@ -219,5 +217,33 @@ public class Admin<T> {
 			}
 		}
 		return null;
+	}
+	
+	public List<DishList> getDishList() {
+        return dishes;
+    }
+
+	
+	public void createOrder(String name, String phone, List<Order> orderList, int dishId, int quantity) {
+	    List<DishList> dishes = getDishList(); // Get the dish list from the customer
+	    DishList selectedDish = null;
+	    
+	    // Find the selected dish by dishId
+	    for (DishList dish : dishes) {
+	        if (dish.getDishId() == dishId) {
+	            selectedDish = dish;
+	            break;
+	        }
+	    }
+	    
+	    if (selectedDish != null) {
+	        Order order = new Order(name, phone, selectedDish, quantity);
+	        order.setCustomerId(this.hashCode()); // Set the customer's unique identifier
+	        orderList.add(order);
+	        System.out.println("创建订单成功！");
+	        order.printOrder();
+	    } else {
+	        System.out.println("菜品编号无效！");
+	    }
 	}
 }
