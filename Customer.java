@@ -14,8 +14,8 @@ public class Customer<T>{
 	
 	//构造函数
 	public Customer() {
-		this.dishes=new ArrayList<>();
-		this.orderList=new ArrayList<>();
+		dishes=new ArrayList<>();
+		orderList=new ArrayList<>();
 	}
 	
 	//设置顾客姓名
@@ -124,8 +124,7 @@ public class Customer<T>{
 		
 	//显示所有菜品信息
 	public void displayAllDishes() {
-		DishList dishList = new DishList();  // 创建菜品列表对象
-		List<DishList> dishes = dishList.getDishes();  // 获取菜品列表
+		List<DishList> dishes = DishList.getDishes();  // 获取菜品列表
 		System.out.println("菜单信息如下：");
 		for(DishList dish:dishes) {
 			System.out.println("菜品编号：" + dish.getDishId());
@@ -147,12 +146,27 @@ public class Customer<T>{
 	}
 	
 	//创建订单
-	public void createOrder(String name,String phone,List<Order> orderList) {
-	Order order=new Order(name,phone,dishes,DishName,DishQuantity);
-	order.setCustomerId(this.hashCode()); // 设置顾客的唯一标识符
-	orderList.add(order);
-	System.out.println("创建订单成功！");
-	order.printOrder();
+	public void createOrder(String name, String phone, List<Order> orderList, int dishId, int quantity) {
+	    List<DishList> dishes = getDishList(); // Get the dish list from the customer
+	    DishList selectedDish = null;
+	    
+	    // Find the selected dish by dishId
+	    for (DishList dish : dishes) {
+	        if (dish.getDishId() == dishId) {
+	            selectedDish = dish;
+	            break;
+	        }
+	    }
+	    
+	    if (selectedDish != null) {
+	        Order order = new Order(name, phone, selectedDish, quantity);
+	        order.setCustomerId(this.hashCode()); // Set the customer's unique identifier
+	        orderList.add(order);
+	        System.out.println("创建订单成功！");
+	        order.printOrder();
+	    } else {
+	        System.out.println("菜品编号无效！");
+	    }
 	}
 	
 	// 添加订单到订单列表中
@@ -210,8 +224,22 @@ public class Customer<T>{
 	}
 	
 	//确认收货
-	public void cunfirmReceipt(Order order) {
-		order.confirmReceive();
+	public void confirmReceipt(int receiptOrderId) {
+	    Order order = null;
+	    // Find the order with the specified ID
+	    for (Order o : orderList) {
+	        if (o.getId() == receiptOrderId) {
+	            order = o;
+	            break;
+	        }
+	    }
+
+	    if (order != null) {
+	        order.confirmReceive();
+	        System.out.println("订单确认收货成功！");
+	    } else {
+	        System.out.println("订单编号无效！");
+	    }
 	}
 
 	// 打印顾客信息
@@ -230,6 +258,36 @@ public class Customer<T>{
 
 	public static void addCustomer(Customer customer) {
 		customerList.add(customer);
+	}
+	
+	
+	//进行菜品评价
+	public void evaluateDishes(int reviewOrderId) {
+	    Order order = null;
+	    // Find the order with the specified ID
+	    for (Order o : orderList) {
+	        if (o.getId() == reviewOrderId) {
+	            order = o;
+	            break;
+	        }
+	    }
+
+	    if (order != null) {
+	        // Display the ordered dishes for evaluation
+	    	Scanner scanner=new Scanner(System.in);
+	        List<DishList> dishList = order.getDishList();
+	        System.out.println("订单编号：" + order.getId());
+	        System.out.println("订单菜品评价：");
+	        for (DishList dish : dishList) {
+	            System.out.println("菜品名称：" + dish.getDishName());
+	            System.out.println("菜品评分（1-5）：");
+	            int rating = scanner.nextInt();
+	            dish.setRating(rating);
+	        }
+	        System.out.println("订单菜品评价成功！");
+	    } else {
+	        System.out.println("订单编号无效！");
+	    }
 	}
 	    
 }
