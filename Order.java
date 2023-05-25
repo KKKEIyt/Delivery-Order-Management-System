@@ -3,12 +3,12 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class Order<T> {
-	private static int idGenerator=1;//订单编号生成器，每次生成订单时自动递增
+	private static int idGenerator=0;//订单编号生成器，每次生成订单时自动递增
 	private final int id;//订单编号
 	private int customerId;//顾客编号
 	private final String name;
 	private final String phone;//订餐人电话
-	private List<DishList> dishList;//菜品列表
+	private static List<DishList> dishList;//菜品列表
 	private double totalPrice;//合计价格
 	private final LocalDateTime orderTime;//下单时间
 	private LocalDateTime receiveTime;//确认收货时间
@@ -20,19 +20,32 @@ public class Order<T> {
 	DishList DishPrice;
 	DishList DishQuantity;
 	
-	public Order(String name,String phone,List<DishList> dishList,DishList DishName,DishList DishQuantity) {
-		this.id=idGenerator++;
-		this.name=name;
-		this.phone=phone;
-		this.dishList=dishList;
-		this.orderTime=LocalDateTime.now();
-		this.totalPrice=0;
-		for(DishList dish:dishList) {
-			this.totalPrice+=dish.getDishPrice()*dish.getDishQuantity();
-		}
-		this.isConfirmed=false;//初始值为未确认收货
-		this.Fulfilled=false;
-	}
+	public Order(String name, String phone, DishList selectedDish, int quantity) {
+        this.id = idGenerator++;
+        this.name = name;
+        this.phone = phone;
+        this.dishList = new ArrayList<>(); // Initialize the dish list
+        this.dishList.add(selectedDish); // Add the selected dish to the list
+        this.orderTime = LocalDateTime.now();
+        this.totalPrice = selectedDish.getDishPrice() * quantity;
+        this.isConfirmed = false;
+        this.Fulfilled = false;
+    }
+
+    // Add a new constructor overload to accept a list of dishes
+    public Order(String name, String phone, List<DishList> dishList) {
+        this.id = idGenerator++;
+        this.name = name;
+        this.phone = phone;
+        this.dishList = dishList;
+        this.orderTime = LocalDateTime.now();
+        this.totalPrice = 0;
+        for (DishList dish : dishList) {
+            this.totalPrice += dish.getDishPrice() * dish.getDishQuantity();
+        }
+        this.isConfirmed = false;
+        this.Fulfilled = false;
+    }
 
 	public boolean getisConfirm() {
 		return isConfirmed;
@@ -114,6 +127,26 @@ public class Order<T> {
             total += food.getDishPrice() * food.getDishQuantity();
         }
         this.totalPrice = total;
+    }
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+	    sb.append("订单编号：").append(id).append("\n");
+	    sb.append("顾客编号：").append(customerId).append("\n");
+	    sb.append("订餐人姓名：").append(name).append("\n");
+	    sb.append("订餐人电话：").append(phone).append("\n");
+	    sb.append("下单时间：").append(orderTime).append("\n");
+	    sb.append("菜品列表：\n");
+	    for (DishList dish : dishList) {
+	        sb.append("\t").append(dish.getDishName()).append(" × ").append(dish.getDishQuantity());
+	        sb.append("，单价 ").append(dish.getDishPrice()).append(" 元，小计：");
+	        sb.append(dish.getDishPrice() * dish.getDishQuantity()).append(" 元\n");
+	    }
+	    sb.append("合计：").append(totalPrice).append(" 元\n");
+	    if (receiveTime != null) {
+	        sb.append("确认收货时间：").append(receiveTime).append("\n");
+	    }
+	    return sb.toString();
     }
 
 	//打印订单信息
