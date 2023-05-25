@@ -203,13 +203,54 @@ public class Main {
             case 6:
             	//下单
             	System.out.println("请输入订餐人姓名：");
-            	String name=scanner.nextLine();
-            	System.out.println("请输入订餐人电话：");
-            	String phone=scanner.nextLine();
-            	System.out.println("请输入所需点的菜品：");
-            	List<DishList> orderList=new ArrayList<>();
-
-
+                String name = scanner.nextLine();
+                scanner.nextLine();  // 消耗换行符
+                System.out.println("请输入订餐人电话：");
+                String phone = scanner.nextLine();
+                System.out.println("请输入要下单的菜品编号：");
+                int dishId = scanner.nextInt();
+                scanner.nextLine();  // 消耗换行符
+                System.out.println("请输入要下单的数量：");
+                int quantity = scanner.nextInt();                
+                List<Order> orderList = new ArrayList<>(); // 创建订单列表对象
+                yu.createOrder(name, phone, customerList.getOrderList(), dishId, quantity);                
+                break;
+            case 7:
+            	//查看订单
+                if (customerList.getOrderList().isEmpty()) {
+                    System.out.println("订单列表为空");
+                } else {
+                    System.out.println("订单列表如下：");
+                    for (Object order : customerList.getOrderList()) {
+                        System.out.println(order.toString());
+                    }
+                }
+                break;
+            case 8:
+            	//取消订单
+            	System.out.println("请输入要删除的订单编号：");
+            	int dishID=scanner.nextInt();
+            	customerList.deleteOrder(dishID);
+            	break;
+            case 9:
+            	//确认收货
+            	System.out.println("请输入要进行收货的订单编号：");
+            	int receiptOrderId=scanner.nextInt();
+            	customerList.confirmReceipt(receiptOrderId);
+            	break;
+            case 10:
+            	//对订单菜品进行评价
+            	System.out.println("请输入订单编号：");
+            	int reviewOrderId=scanner.nextInt();
+            	customerList.evaluateDishes(reviewOrderId);
+                break;
+            case 11:
+                //返回上级菜单
+                exit = true;
+                break;
+            default:
+                System.out.println("输入有误，请重新选择！");
+                break;
             }
 		}
 	}
