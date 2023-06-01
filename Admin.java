@@ -25,8 +25,13 @@ public class Admin<T> {
 	    double dishPrice = Double.parseDouble(dishInfoArr[2].trim());
 	    int dishQuantity = Integer.parseInt(dishInfoArr[3].trim());
 	    String dishDescription = dishInfoArr[4].trim();
-
-	    DishList dish = new DishList(dishId, dishName, dishPrice, dishQuantity, new ArrayList<>());
+	    for (DishList existingDish : dishes) {
+	        if (existingDish.getDishId() == dishId) {
+	            System.out.println("菜品已存在，无法添加相同的菜品编号！");
+	            return;
+	        }
+	    }
+	    DishList dish = new DishList(dishId, dishName, dishPrice, dishQuantity, new LinkedList<>());
 	    dish.getDishDescription().add(dishDescription);
 	    dishes.add(dish);
 
@@ -44,8 +49,7 @@ public class Admin<T> {
 				System.out.println("菜品修改成功！");
 				System.out.println(dish.toString());
 			}
-		}
-		System.out.println("菜品不存在，无法修改！");
+		}	
 	}
 	
 	//删除菜品信息
@@ -103,7 +107,7 @@ public class Admin<T> {
 	
 	//按价格的升序或降序排列显示
 	public void displayDishByPrice(boolean ascending) {
-		List<DishList> sortedDishes=new ArrayList<DishList>(dishes);
+		List<DishList> sortedDishes=new LinkedList<DishList>(dishes);
 		Collections.sort(sortedDishes,new Comparator<DishList>() {
 			public int compare(DishList dish1,DishList dish2) {
 				return Double.compare(dish1.getDishPrice(),dish2.getDishPrice());
