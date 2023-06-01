@@ -4,8 +4,8 @@ import java.util.*;
 public class Admin<T> {
 	private String username;
 	private String password;
-	private static List<DishList> dishes;//存储菜品信息的链表
-	private static List<Order> orderList;
+	private List<DishList> dishes;//存储菜品信息的链表
+	private List<Order> orderList;
 	Scanner scanner=new Scanner(System.in);
 	public Admin(String username,String password) {
 		this.username=username;
@@ -27,7 +27,8 @@ public class Admin<T> {
 	    String dishDescription = dishInfoArr[4].trim();
 	    for (DishList existingDish : dishes) {
 	        if (existingDish.getDishId() == dishId) {
-	            System.out.println("菜品已存在，无法添加相同的菜品编号！");
+	            System.out.println("菜品已存在，将更新菜品数量！");
+	            existingDish.setDishQuantity(existingDish.getDishQuantity() + dishQuantity);
 	            return;
 	        }
 	    }
@@ -214,7 +215,7 @@ public class Admin<T> {
 	}
 	
 	//通过菜品ID返回菜品
-	private static DishList findDishById(int dishId) {
+	private DishList findDishById(int dishId) {
 		for(DishList dish:dishes) {
 			if(dish.getDishId()==dishId) {
 				return dish;
