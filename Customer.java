@@ -6,7 +6,7 @@ public class Customer<T>{
 	private String name;//顾客姓名
 	private String password;//顾客密码
 	private String phone;//顾客电话
-	private static List<DishList> dishes;//菜品链表
+	private List<DishList> dishes;//菜品链表
 	private List<Order> orderList;//订单链表
 	static List<Customer> customerList=new ArrayList<>();
 	DishList DishName;
@@ -14,8 +14,8 @@ public class Customer<T>{
 	
 	//构造函数
 	public Customer() {
-		dishes=new LinkedList<>();
-		orderList=new LinkedList<>();
+		this.dishes=new LinkedList<>();
+		this.orderList=new LinkedList<>();
 	}
 	
 	//设置顾客姓名
@@ -44,7 +44,7 @@ public class Customer<T>{
 	}
 	
 	//获取菜品列表
-	public List<DishList> getDishList(){
+	public List<DishList> getDishes(){
 		return dishes;
 	}
 	
@@ -147,7 +147,7 @@ public class Customer<T>{
 	
 	//创建订单
 	public void createOrder(String name, String phone, List<Order> orderList, int dishId, int quantity) {
-	    List<DishList> dishes = getDishList(); // Get the dish list from the customer
+	    List<DishList> dishes = getDishes(); // Get the dish list from the customer
 	    DishList selectedDish = null;
 	    
 	    // Find the selected dish by dishId
