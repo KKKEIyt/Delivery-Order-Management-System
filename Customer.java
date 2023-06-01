@@ -124,7 +124,6 @@ public class Customer<T>{
 		
 	//显示所有菜品信息
 	public void displayAllDishes() {
-		List<DishList> dishes = DishList.getDishes();  // 获取菜品列表
 		System.out.println("菜单信息如下：");
 		for(DishList dish:dishes) {
 			System.out.println("菜品编号：" + dish.getDishId());
