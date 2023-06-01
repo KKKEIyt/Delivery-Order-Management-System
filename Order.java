@@ -14,7 +14,7 @@ public class Order<T> {
 	private LocalDateTime receiveTime;//确认收货时间
 	private boolean isConfirmed;//是否确认收货
 	private boolean Fulfilled;
-	private List<Order> orderList=new ArrayList<>();
+	private List<Order> orderList=new LinkedList<>();
 	DishList DishId;
 	DishList DishName;
 	DishList DishPrice;
@@ -24,7 +24,7 @@ public class Order<T> {
         this.id = idGenerator++;
         this.name = name;
         this.phone = phone;
-        this.dishList = new ArrayList<>(); // Initialize the dish list
+        this.dishList = new LinkedList<>(); // Initialize the dish list
         this.dishList.add(selectedDish); // Add the selected dish to the list
         this.orderTime = LocalDateTime.now();
         this.totalPrice = selectedDish.getDishPrice() * quantity;
