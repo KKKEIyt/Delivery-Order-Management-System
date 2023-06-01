@@ -6,16 +6,16 @@ public class Customer<T>{
 	private String name;//顾客姓名
 	private String password;//顾客密码
 	private String phone;//顾客电话
-	private static List<DishList> dishes;//菜品列表
-	private List<Order> orderList;//订单列表
+	private static List<DishList> dishes;//菜品链表
+	private List<Order> orderList;//订单链表
 	static List<Customer> customerList=new ArrayList<>();
 	DishList DishName;
 	DishList DishQuantity;
 	
 	//构造函数
 	public Customer() {
-		dishes=new ArrayList<>();
-		orderList=new ArrayList<>();
+		dishes=new LinkedList<>();
+		orderList=new LinkedList<>();
 	}
 	
 	//设置顾客姓名
