@@ -101,14 +101,17 @@ public class Main {
 				break;
 			case 2:
 				//修改菜品
-				System.out.println("请输入要修改的菜品编号：：");
+				System.out.println("请输入要修改的菜品编号：");
 				int dishId=scanner.nextInt();
 				System.out.println("请输入你要修改的菜品名称：");
 				String dishName=scanner.nextLine();
+				scanner.nextLine();  // 消耗换行符
 				System.out.println("请输入你要修改的菜品价格：");
 				double dishPrice=scanner.nextDouble();
+				scanner.nextLine();  // 消耗换行符
 				System.out.println("请输入你要修改的菜品数量：");
 				int dishQuantity=scanner.nextInt();
+				scanner.nextLine();  // 消耗换行符
 				yu.modifyDish(dishId,dishName,dishPrice,dishQuantity);
 				break;
 			case 3:
@@ -121,6 +124,7 @@ public class Main {
 				//按菜品名称查询
 				System.out.println("请输入菜品名称关键字：");
 				String keyword=scanner.nextLine();
+				scanner.nextLine();  // 消耗换行符
 				yu.queryDishByName(keyword);
 				break;
 			case 5:
