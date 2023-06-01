@@ -2,12 +2,13 @@ package bighw;
 import java.util.*;
 
 public class DishList {
-	private static List<DishList> dishes;
+	private static List<DishList> dishes= new LinkedList<>();
 	private static int DishId; // 菜品编号
     private static String DishName; // 菜品名称
     private static double DishPrice; // 菜品价格
     private static int DishQuantity; // 菜品数量
     private static List<String> DishDescription;//菜品描述
+    private int rating;
     //带参数的构造函数，用于初始化菜品价格
     public DishList(int DishId,String DishName,double DishPrice,int DishQuantity,List<String> DishDescription) {
     	this.DishId=DishId;
@@ -15,9 +16,10 @@ public class DishList {
     	this.DishPrice=DishPrice;
     	this.DishQuantity=DishQuantity;
     	this.DishDescription=DishDescription;
+    	dishes.add(this);
     }
     public DishList() {
-    	dishes=new ArrayList<>();
+    	dishes=new LinkedList<>();
     }
     
     //获取菜品编号
@@ -43,6 +45,14 @@ public class DishList {
     //设置菜品名称
     public void setDishName(String DishName) {
     	this.DishName=DishName;
+    }
+    //设置菜品评分
+    public void setRating(int rating) {
+    	this.rating=rating;
+    }
+    //获取菜品评分
+    public int getRating() {
+    	return rating;
     }
     //修改菜品价格
     public void setDishPrice(double DishPrice) {
